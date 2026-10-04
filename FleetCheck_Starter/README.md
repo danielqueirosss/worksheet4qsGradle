@@ -40,3 +40,22 @@ Ao incluir os scripts `mvnw` / `mvnw.cmd` e a pasta `.mvn/wrapper/`, o próprio 
 O SBOM (`bom.json`) inclui componentes adicionais porque o plugin CycloneDX realiza uma análise do grafo completo de dependências do Maven, registando tanto as dependências diretas como as dependências transitivas.
 
 Embora apenas tenhamos declarado diretamente no `pom.xml`, estas bibliotecas necessitam de outros módulos para funcionar. Para garantir a segurança da cadeia de suprimentos de software, o SBOM deve mapear 100% dos componentes e bibliotecas de terceiros realmente presentes no projeto final e no ambiente de testes.
+
+## Evidence 8.1
+
+> Task :compileJava FAILED
+C:\Users\danie\Desktop\Universidade\3ºAno\QS\FleetCheck_Gradle\src\main\java\pt\upt\fleetcheck\App.java:3: error: package com.fasterxml.jackson.databind does not exist
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+## Evidence 8.2
+
+A dependência direta declarada no build.gradle é com.fasterxml.jackson.core:jackson-databind:2.22.2.
+As dependências transitivas resolvidas automaticamente pelo Gradle são jackson-annotations e jackson-core. A mudança do sistema de build (de Maven para Gradle) não altera o grafo de dependências da aplicação.
+
+## Evidence 8.3
+
+A adição do plugin `application` e do atributo `Main-Class` no manifesto do JAR definiu o ponto de entrada da aplicação (`pt.upt.fleetcheck.App`). Além disso, o bloco `from { configurations.runtimeClasspath ... }` instruiu o Gradle a descompactar e empacotar todas as dependências do projeto (como o `jackson-databind`) diretamente dentro do próprio ficheiro JAR final (`build/libs/fleetcheck-1.0.0.jar`), transformando-o num *Fat JAR* autónomo executável sem necessidade de um classpath externo.
+
+## Evidence 8.4 - Gradle Wrapper Analysis
+
+O Gradle Wrapper removeu a suposição implícita de que uma versão específica e compatível do Gradle está previamente instalada no sistema operativo.
