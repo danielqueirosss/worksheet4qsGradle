@@ -56,6 +56,15 @@ As dependências transitivas resolvidas automaticamente pelo Gradle são jackson
 
 A adição do plugin `application` e do atributo `Main-Class` no manifesto do JAR definiu o ponto de entrada da aplicação (`pt.upt.fleetcheck.App`). Além disso, o bloco `from { configurations.runtimeClasspath ... }` instruiu o Gradle a descompactar e empacotar todas as dependências do projeto (como o `jackson-databind`) diretamente dentro do próprio ficheiro JAR final (`build/libs/fleetcheck-1.0.0.jar`), transformando-o num *Fat JAR* autónomo executável sem necessidade de um classpath externo.
 
-## Evidence 8.4 - Gradle Wrapper Analysis
+## Evidence 8.4 
 
 O Gradle Wrapper removeu a suposição implícita de que uma versão específica e compatível do Gradle está previamente instalada no sistema operativo.
+
+## Evidence 8.5 
+
+https://github.com/danielqueirosss/worksheet4qsGradle/actions/runs/37198172325
+
+## Evidence 8.6 - CycloneDX SBOM (Gradle)
+
+O SBOM gerado pelo plugin do CycloneDX contém componentes que não foram explicitamente declarados no `build.gradle` porque o plugin inspeciona e mapeia o grafo completo de dependências transitivas da aplicação.
+Apesar de apenas termos declarado o `com.fasterxml.jackson.core:jackson-databind:2.22.2` como dependência direta, o `jackson-databind` necessita internamente do `jackson-annotations` e do `jackson-core` para funcionar. O SBOM regista toda a árvore de componentes em tempo de compilação/execução para garantir a rastreabilidade total de segurança e análise de vulnerabilidades de software.
