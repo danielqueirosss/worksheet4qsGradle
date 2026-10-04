@@ -64,7 +64,13 @@ O Gradle Wrapper removeu a suposição implícita de que uma versão específica
 
 https://github.com/danielqueirosss/worksheet4qsGradle/actions/runs/37198172325
 
-## Evidence 8.6 - CycloneDX SBOM (Gradle)
+## Evidence 8.6 
 
 O SBOM gerado pelo plugin do CycloneDX contém componentes que não foram explicitamente declarados no `build.gradle` porque o plugin inspeciona e mapeia o grafo completo de dependências transitivas da aplicação.
 Apesar de apenas termos declarado o `com.fasterxml.jackson.core:jackson-databind:2.22.2` como dependência direta, o `jackson-databind` necessita internamente do `jackson-annotations` e do `jackson-core` para funcionar. O SBOM regista toda a árvore de componentes em tempo de compilação/execução para garantir a rastreabilidade total de segurança e análise de vulnerabilidades de software.
+
+
+## Passo 8.7
+
+O software manteve-se rigorosamente o mesmo,o que mudou foi o processo de construção.
+Mudaram as ferramentas de automação, a sintaxe de configuração (de XML declarativo para DSL programável em Groovy), a estrutura de tarefas/ciclo de vida e a gestão interna do armazenamento e compilação dos artefactos. Esta transição demonstra a independência entre o código-fonte da aplicação e os ecossistemas de build e CI/CD utilizados para o compilar, testar e empacotar.
